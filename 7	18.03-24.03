@@ -1,0 +1,137 @@
+#1
+#include <iostream>
+#include <string>
+#include <map>
+#include <sstream>
+
+int main() {
+    std::string values;
+    std::getline(std::cin, values);
+
+    std::string templateStr;
+    std::getline(std::cin, templateStr);
+
+    std::istringstream iss(values);
+    std::map<std::string, std::string> valueMap;
+
+    // Parse name-value pairs
+    std::string pair;
+    while (std::getline(iss, pair, ',')) {
+        size_t pos = pair.find('=');
+        if (pos != std::string::npos) {
+            std::string name = pair.substr(0, pos);
+            std::string value = pair.substr(pos + 1);
+            valueMap[name] = value;
+        }
+    }
+
+    // Replace placeholders in the template
+    std::string result;
+    size_t startPos = 0;
+    while (startPos < templateStr.size()) {
+        size_t openPos = templateStr.find('[', startPos);
+        if (openPos == std::string::npos) {
+            result += templateStr.substr(startPos);
+            break;
+        }
+        result += templateStr.substr(startPos, openPos - startPos);
+        
+        size_t closePos = templateStr.find(']', openPos);
+        if (closePos == std::string::npos) {
+            result += templateStr.substr(openPos);
+            break;
+        }
+        
+        std::string placeholder = templateStr.substr(openPos + 1, closePos - openPos - 1);
+        auto it = valueMap.find(placeholder);
+        if (it != valueMap.end()) {
+            result += it->second;
+        } else {
+            result += '[' + placeholder + ']';
+        }
+        
+        startPos = closePos + 1;
+    }
+
+    std::cout << result << std::endl;
+
+    return 0;
+}
+
+#2
+#include <iostream>
+#include <string>
+#include <cctype>
+
+bool isValidPassword(const std::string& password) {
+    // Check length
+    if (password.length() < 8) {
+        std::cout << "The password must be 8 characters long" << std::endl;
+        return false;
+    }
+
+    // Check for at least one upper-case letter
+    bool hasUpperCase = false;
+    for (char c : password) {
+        if (std::isupper(c)) {
+            hasUpperCase = true;
+            break;
+        }
+    }
+    if (!hasUpperCase) {
+        std::cout << "The password must have at least one upper case letter" << std::endl;
+        return false;
+    }
+
+    // Check for at least one lower-case letter
+    bool hasLowerCase = false;
+    for (char c : password) {
+        if (std::islower(c)) {
+            hasLowerCase = true;
+            break;
+        }
+    }
+    if (!hasLowerCase) {
+        std::cout << "The password must have at least one lower case letter" << std::endl;
+        return false;
+    }
+
+    // Check for at least one digit
+    bool hasDigit = false;
+    for (char c : password) {
+        if (std::isdigit(c)) {
+            hasDigit = true;
+            break;
+        }
+    }
+    if (!hasDigit) {
+        std::cout << "The password must have at least one digit" << std::endl;
+        return false;
+    }
+
+    // Check for at least one special character
+    bool hasSpecialChar = false;
+    for (char c : password) {
+        if (!std::isalnum(c)) {
+            hasSpecialChar = true;
+            break;
+        }
+    }
+    if (!hasSpecialChar) {
+        std::cout << "The password must have at least one special character" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+int main() {
+    std::string password;
+    std::getline(std::cin, password);
+
+    if (isValidPassword(password)) {
+        std::cout << "The password is valid" << std::endl;
+    }
+
+    return 0;
+}
