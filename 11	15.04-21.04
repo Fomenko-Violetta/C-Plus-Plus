@@ -1,0 +1,166 @@
+#1
+#include <iostream>
+#include <iomanip> // for std::fixed and std::setprecision
+
+class FlightBooking {
+public:
+    FlightBooking(int id, int capacity, int reserved);
+    void printStatus();
+    bool addReservation(int n);
+    bool cancelReservation(int n);
+private:
+    int id;
+    int capacity;
+    int reserved;
+};
+
+FlightBooking::FlightBooking(int id, int capacity, int reserved) : id(id), capacity(capacity) {
+    // Limit reserved seats to 105% of the total capacity
+    if (reserved > capacity * 1.05) {
+        this->reserved = capacity * 1.05;
+    } else {
+        this->reserved = reserved;
+    }
+    // Ensure non-negative number of reservations
+    if (this->reserved < 0) {
+        this->reserved = 0;
+    }
+}
+
+void FlightBooking::printStatus() {
+    // Calculate the percentage of seats reserved
+    double percentage = static_cast<double>(reserved) / capacity * 100.0;
+
+    // Print the status report
+    std::cout << "Flight " << id << " : " << reserved << "/" << capacity << " (" << std::fixed << std::setprecision(0) << percentage << "%) seats reserved" << std::endl;
+}
+
+bool FlightBooking::addReservation(int n) {
+    if (reserved + n <= capacity * 1.05) {
+        reserved += n;
+        return true;
+    } else {
+        std::cout << "Cannot perform this operation" << std::endl;
+        return false;
+    }
+}
+
+bool FlightBooking::cancelReservation(int n) {
+    if (reserved - n >= 0) {
+        reserved -= n;
+        return true;
+    } else {
+        std::cout << "Cannot perform this operation" << std::endl;
+        return false;
+    }
+}
+
+int main() {
+    int reserved = 0,
+        capacity = 0;
+    
+    std::cout << "Provide flight capacity: ";
+    std::cin >> capacity;
+    std::cout << "Provide number of reserved seats: ";
+    std::cin >> reserved;
+
+    FlightBooking booking(1, capacity, reserved);
+    booking.printStatus();
+
+    std::string command;
+    int n;
+
+    while (command != "quit") {
+        std::cout << "Enter command (add/cancel/quit): ";
+        std::cin >> command;
+
+        if (command == "add") {
+            std::cout << "Enter number of reservations to add: ";
+            std::cin >> n;
+            booking.addReservation(n);
+            booking.printStatus();
+        } else if (command == "cancel") {
+            std::cout << "Enter number of reservations to cancel: ";
+            std::cin >> n;
+            booking.cancelReservation(n);
+            booking.printStatus();
+        } else if (command != "quit") {
+            std::cout << "Invalid command" << std::endl;
+        }
+    }
+
+    return 0;
+}
+
+#2
+#include <iostream>
+#include <string>
+#include <cmath> // for abs()
+
+using namespace std;
+
+class Fraction {
+public:
+    Fraction(int numerator, int denominator);
+    string toString();
+    double toDouble();
+private:
+    int numerator;
+    int denominator;
+    int gcd(int a, int b);
+};
+
+Fraction::Fraction(int numerator, int denominator) {
+    int commonDivisor = gcd(abs(numerator), abs(denominator));
+    this->numerator = numerator / commonDivisor;
+    this->denominator = denominator / commonDivisor;
+}
+
+string Fraction::toString() {
+    int wholePart = numerator / denominator;
+    int remainder = abs(numerator) % denominator;
+
+    string result;
+
+    if (wholePart != 0) {
+        result += to_string(wholePart);
+        if (remainder != 0) {
+            result += " ";
+        }
+    }
+
+    if (remainder != 0) {
+        result += to_string(remainder) + "/" + to_string(denominator);
+    }
+
+    if (numerator < 0 && wholePart == 0) {
+        result = "-" + result;
+    }
+
+    return result;
+}
+
+double Fraction::toDouble() {
+    return static_cast<double>(numerator) / denominator;
+}
+
+int Fraction::gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+
+int main(void) {
+    int num, den;
+    char slash;
+    
+    cout << "Enter fraction (numerator/denominator): ";
+    cin >> num >> slash >> den;
+
+    Fraction fraction(num, den);
+    cout << fraction.toString() << " is " << fraction.toDouble() << " in decimal" << endl;
+
+    return 0;
+}
