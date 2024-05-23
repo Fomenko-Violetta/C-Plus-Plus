@@ -1,0 +1,108 @@
+#1
+#include <iostream>
+#include <cstdlib> 
+#include <ctime>   
+
+using namespace std;
+
+int main() {
+    srand(time(nullptr)); // Инициализируем генератор случайных чисел
+
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    // Создаем динамический массив
+    float* dynamicArray = new float[size];
+
+    // Заполняем массив случайными значениями от -2 до 2
+    for (int i = 0; i < size; ++i) {
+        dynamicArray[i] = -2 + static_cast<float>(rand()) / RAND_MAX * 4;
+    }
+
+    // Подсчет количества положительных и отрицательных чисел
+    int positiveCount = 0;
+    int negativeCount = 0;
+    for (int i = 0; i < size; ++i) {
+        if (dynamicArray[i] > 0) {
+            positiveCount++;
+        } else if (dynamicArray[i] < 0) {
+            negativeCount++;
+        }
+    }
+
+    // Вывод результата
+    cout << "Number of positive numbers: " << positiveCount << endl;
+    cout << "Number of negative numbers: " << negativeCount << endl;
+
+    // Освобождаем память, выделенную для массива
+    delete[] dynamicArray;
+
+    return 0;
+}
+
+#2
+#include <iostream>
+#include <cstdlib> 
+#include <ctime>   
+
+using namespace std;
+
+int main() {
+    srand(time(nullptr)); // Инициализируем генератор случайных чисел
+
+    const int size = 3;
+
+    // Создаем двумерный динамический массив
+    int** dynamicArray = new int*[size];
+    for (int i = 0; i < size; ++i) {
+        dynamicArray[i] = new int[size];
+    }
+
+    // Заполняем массив случайными значениями
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            dynamicArray[i][j] = rand() % 10; // случайные значения от 0 до 9
+        }
+    }
+
+    // Вывод элементов главной диагонали
+    cout << "Elements on the main diagonal: ";
+    for (int i = 0; i < size; ++i) {
+        cout << dynamicArray[i][i] << " ";
+    }
+    cout << endl;
+
+    // Вывод элементов побочной диагонали
+    cout << "Elements on the secondary diagonal: ";
+    for (int i = 0; i < size; ++i) {
+        cout << dynamicArray[i][size - 1 - i] << " ";
+    }
+    cout << endl;
+
+    // Подсчет количества четных и нечетных элементов
+    int evenCount = 0;
+    int oddCount = 0;
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (dynamicArray[i][j] % 2 == 0) {
+                evenCount++;
+            } else {
+                oddCount++;
+            }
+        }
+    }
+
+    // Вывод количества четных и нечетных элементов
+    cout << "Number of even elements: " << evenCount << endl;
+    cout << "Number of odd elements: " << oddCount << endl;
+
+    // Освобождаем память, выделенную для массива
+    for (int i = 0; i < size; ++i) {
+        delete[] dynamicArray[i];
+    }
+    delete[] dynamicArray;
+
+    return 0;
+}
+
