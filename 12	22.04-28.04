@@ -1,0 +1,73 @@
+#1
+#include <iostream>
+#include <string>
+#include <sstream> // for string stream
+#include <cmath>   // for abs()
+
+using namespace std;
+
+class Fraction {
+public:
+    Fraction(int numerator, int denominator);
+    string toString();
+    double toDouble();
+private:
+    int numerator;
+    int denominator;
+    int gcd(int a, int b);
+};
+
+Fraction::Fraction(int numerator, int denominator) {
+    int commonDivisor = gcd(abs(numerator), abs(denominator));
+    this->numerator = numerator / commonDivisor;
+    this->denominator = denominator / commonDivisor;
+}
+
+string Fraction::toString() {
+    int wholePart = numerator / denominator;
+    int remainder = abs(numerator) % denominator;
+
+    stringstream ss;
+
+    if (wholePart != 0) {
+        ss << wholePart;
+        if (remainder != 0) {
+            ss << " ";
+        }
+    }
+
+    if (remainder != 0) {
+        ss << remainder << "/" << denominator;
+    }
+
+    if (numerator < 0 && wholePart == 0) {
+        ss << "-";
+    }
+
+    return ss.str();
+}
+
+double Fraction::toDouble() {
+    return static_cast<double>(numerator) / denominator;
+}
+
+int Fraction::gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    } else {
+        return gcd(b, a % b);
+    }
+}
+
+int main(void) {
+    int num, den;
+    char slash;
+
+    cout << "Enter fraction (numerator/denominator): ";
+    cin >> num >> slash >> den;
+
+    Fraction fraction(num, den);
+    cout << fraction.toString() << " is " << fraction.toDouble() << " in decimal" << endl;
+
+    return 0;
+}
