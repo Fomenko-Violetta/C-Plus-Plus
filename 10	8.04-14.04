@@ -1,0 +1,109 @@
+#1
+#include <iostream>
+#include <string>
+
+class ShopItemOrder {
+public:
+    // Constructor
+    ShopItemOrder(const std::string& name, double price, int quantity) :
+        item_name(name), unit_price(price), quantity_ordered(quantity) {}
+
+    // Access methods
+    void setItemName(const std::string& name) {
+        item_name = name;
+    }
+
+    void setUnitPrice(double price) {
+        unit_price = price;
+    }
+
+    void setQuantityOrdered(int quantity) {
+        quantity_ordered = quantity;
+    }
+
+    std::string getItemName() const {
+        return item_name;
+    }
+
+    double getUnitPrice() const {
+        return unit_price;
+    }
+
+    int getQuantityOrdered() const {
+        return quantity_ordered;
+    }
+
+    // Calculate total price
+    double getTotalPrice() const {
+        return unit_price * quantity_ordered;
+    }
+
+    // Print order details
+    void printOrder() const {
+        std::cout << "Item: " << item_name << std::endl;
+        std::cout << "Unit Price: $" << unit_price << std::endl;
+        std::cout << "Quantity Ordered: " << quantity_ordered << std::endl;
+        std::cout << "Total Price: $" << getTotalPrice() << std::endl;
+    }
+
+private:
+    std::string item_name;
+    double unit_price;
+    int quantity_ordered;
+};
+
+int main() {
+    // Create a ShopItemOrder object
+    ShopItemOrder order("Smartphone", 999.99, 2);
+
+    // Print order details
+    order.printOrder();
+
+    // Modify order details
+    order.setQuantityOrdered(3);
+    order.setUnitPrice(899.99);
+
+    // Print modified order details
+    order.printOrder();
+
+    return 0;
+}
+
+#2
+#include <iostream>
+#include <iomanip> // for std::fixed and std::setprecision
+
+class FlightBooking {
+public:
+    FlightBooking(int id, int capacity, int reserved);
+    void printStatus();
+private:
+    int id;
+    int capacity;
+    int reserved;
+};
+
+FlightBooking::FlightBooking(int id, int capacity, int reserved) : id(id), capacity(capacity), reserved(reserved) {}
+
+void FlightBooking::printStatus() {
+    // Calculate the percentage of seats reserved
+    double percentage = static_cast<double>(reserved) / capacity * 100.0;
+
+    // Print the status report
+    std::cout << "Flight " << id << " : " << reserved << "/" << capacity << " (" << std::fixed << std::setprecision(0) << percentage << "%) seats reserved" << std::endl;
+}
+
+int main() {
+    int reserved = 0,
+        capacity = 0;
+    
+    std::cout << "Provide flight capacity: ";
+    std::cin >> capacity;
+    std::cout << "Provide number of reserved seats: ";
+    std::cin >> reserved;
+
+    FlightBooking booking(1, capacity, reserved);
+    booking.printStatus();
+
+    return 0;
+}
