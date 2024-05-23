@@ -1,0 +1,133 @@
+#1
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person {
+public:
+    string name;
+    int age;
+    string occupation;
+
+    // Constructor
+    Person(string n, int a, string occ) : name(n), age(a), occupation(occ) {}
+
+    // Member function to print person details
+    void print() {
+        cout << name << " is " << age << " years old and works as a " << occupation << endl;
+    }
+};
+
+int main() {
+    // Create a Person object
+    Person person("Harry", 23, "teacher");
+
+    // Print person details using member function
+    person.print();
+
+    return 0;
+}
+
+#2
+#include <iostream>
+
+class Square {
+private:
+    double side;
+    double area;
+
+public:
+    Square(double s) {
+        set_side(s);
+    }
+
+    void set_side(double s) {
+        if (s >= 0) {
+            side = s;
+            area = s * s;
+        }
+    }
+
+    double get_area() {
+        return area;
+    }
+
+    void print() {
+        std::cout << "Square with side " << side << " has area " << area << std::endl;
+    }
+};
+
+int main() {
+    Square square(5);
+    square.print(); // Output: Square with side 5 has area 25
+
+    // Update side and area
+    square.set_side(7);
+    square.print(); // Output: Square with side 7 has area 49
+
+    // Try setting a negative side (should have no effect)
+    square.set_side(-2);
+    square.print(); // Output: Square with side 7 has area 49
+
+    return 0;
+}
+
+#3
+#include <iostream>
+
+// AdHocSquare class implementation
+class AdHocSquare {
+public:
+    AdHocSquare(double s) : side(s) {}
+
+    void set_side(double s) {
+        side = s;
+    }
+
+    double get_area() {
+        return side * side;
+    }
+
+private:
+    double side;
+};
+
+// LazySquare class implementation
+class LazySquare {
+public:
+    LazySquare(double s) : side(s), area(0), side_changed(true) {}
+
+    void set_side(double s) {
+        side = s;
+        side_changed = true;
+    }
+
+    double get_area() {
+        if (side_changed) {
+            area = side * side;
+            side_changed = false;
+        }
+        return area;
+    }
+
+private:
+    double side;
+    double area;
+    bool side_changed;
+};
+
+int main() {
+    // AdHocSquare usage
+    AdHocSquare adHoc(5);
+    std::cout << "AdHocSquare area: " << adHoc.get_area() << std::endl;
+    adHoc.set_side(7);
+    std::cout << "AdHocSquare area after side change: " << adHoc.get_area() << std::endl;
+
+    // LazySquare usage
+    LazySquare lazy(5);
+    std::cout << "LazySquare area: " << lazy.get_area() << std::endl;
+    lazy.set_side(7);
+    std::cout << "LazySquare area after side change: " << lazy.get_area() << std::endl;
+
+    return 0;
+}
