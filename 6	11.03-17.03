@@ -1,0 +1,77 @@
+#1
+#include <iostream>
+using namespace std;
+
+bool isPrime(int number) {
+    // Перевіряємо, чи число менше за 2
+    if (number < 2)
+        return false;
+    
+    // Перевіряємо, чи число ділиться націло на будь-яке число від 2 до його квадратного кореня
+    for (int i = 2; i * i <= number; ++i) {
+        if (number % i == 0)
+            return false; // Число не є простим, якщо воно ділиться націло на інше число
+    }
+    
+    return true; // Число є простим, якщо воно не ділиться націло на жодне інше число
+}
+
+int main() {
+    int num;
+    cout << "Enter a number: ";
+    cin >> num;
+
+    if (isPrime(num))
+        cout << num << " is a prime number." << endl;
+    else
+        cout << num << " is not a prime number." << endl;
+
+    return 0;
+}
+
+#2
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+bool isPrime(int num) {
+    if (num < 2)
+        return false;
+    for (int i = 2; i <= sqrt(num); ++i) {
+        if (num % i == 0)
+            return false;
+    }
+    return true;
+}
+
+int main() {
+    for(int i = 0; i <= 21; i++) {
+        if(isPrime(i))
+            cout << i << " ";
+    }
+    cout << endl;
+    return 0;
+}
+
+#3
+#include <iostream>
+using namespace std;
+
+void increment(int& var) {
+    var++;
+}
+
+void increment(int& var, int expression) {
+    var += expression;
+}
+
+int main(void) {
+    int var = 0;
+    for(int i = 0; i < 10; i++)
+        if(i % 2)
+            increment(var);
+        else
+            increment(var,i);
+    cout << var << endl;
+    return 0;
+}
