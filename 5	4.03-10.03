@@ -52,3 +52,65 @@ int main(void) {
     }
     return 0;
 }
+
+#Вказівники
+
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+struct Date {
+    int year;
+    int month;
+    int day;
+};
+
+bool isLeap(int year) {
+    // Ваша реализация isLeap
+}
+
+int monthLength(int year, int month) {
+    // Ваша реализация monthLength
+}
+
+Date today(void) {
+    time_t t = time(nullptr);
+    tm* tl = localtime(&t);
+    
+    Date currentDate;
+    currentDate.year = tl->tm_year + 1900;
+    currentDate.month = tl->tm_mon + 1;
+    currentDate.day = tl->tm_mday;
+    
+    return currentDate;
+}
+
+int main(void) {
+    Date currentDate = today();
+    cout << "Current date: " << currentDate.year << "-" << currentDate.month << "-" << currentDate.day << endl;
+
+    // Дата моего рождения
+    Date myBirthday;
+    myBirthday.year = 2000;
+    myBirthday.month = 1;
+    myBirthday.day = 1;
+
+    // Вычисляем количество дней между текущей датой и моим днем рождения
+    int daysPassed = 0;
+    time_t now;
+    time(&now);
+    tm *birthday = localtime(&now);
+    daysPassed = (currentDate.year - myBirthday.year) * 365;
+    daysPassed += currentDate.day - myBirthday.day;
+    for(int i = myBirthday.year; i < currentDate.year; i++)
+    {
+        if(isLeap(i))
+        {
+            daysPassed++;
+        }
+    }
+
+    cout << "Days passed since my birthday: " << daysPassed << endl;
+
+    return 0;
+}
